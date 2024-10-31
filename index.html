@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avisos das Filiais</title>
+    <style>
+        /* Configuração global */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e0f7fa; /* Fundo azul claro */
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(45deg, #c0641d, #d4740b); /* Gradiente laranja mais escuro */
+            padding: 30px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Estilo da área principal */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* Estilo das abas */
+        .tabs {
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 40px;
+            padding: 10px 0;
+            background-color: #f9f9f9;
+            border-radius: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab {
+            padding: 12px 30px;
+            cursor: pointer;
+            background-color: #d4740b;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab:hover {
+            background-color: #c0641d;
+            transform: translateY(-3px);
+        }
+
+        .tab.active {
+            background-color: #c0641d;
+            color: white;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Estilo dos conteúdos das abas */
+        .tab-content {
+            display: none;
+            padding: 25px;
+            background-color: #f5faff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Formulário de notas */
+        .note-form {
+            margin-bottom: 30px;
+            background-color: #eaf7ff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .note-form h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #c0641d;
+            text-transform: uppercase;
+        }
+
+        .note-form input, .note-form textarea {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .note-form input:focus, .note-form textarea:focus {
+            border-color: #c0641d;
+        }
+
+        .note-form button {
+            background-color: #c0641d;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 0 auto;
+            text-transform: uppercase;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .note-form button:hover {
+            background-color: #d4740b;
+        }
+
+        /* Lista de avisos */
+        .notes-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .note-item {
+            background-color: #fffbf0;
+            margin: 15px 0;
+            padding: 20px;
+            border-left: 8px solid #c0641d;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .note-item:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateX(5px);
+        }
+
+        .note-item h4 {
+            margin: 0 0 10px;
+            font-size: 1.4em;
+            color: #333;
+        }
+
+        .note-item p {
+            margin: 0;
+            color: #555;
+            white-space: pre-wrap; /* Mantém quebras de linha */
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #d4740b;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .note-item:hover .delete-btn {
+            display: inline-block;
+        }
+
+        .delete-btn:hover {
+            background-color: #c0641d;
+        }
+
+        /* Estilo para o link de anexo */
+        .attachment-link {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 15px;
+            background-color: #c0641d;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .attachment-link:hover {
+            background-color: #d4740b;
+        }
+
+        /* Rodapé */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #c0641d;
+            color: white;
+            font-size: 1.1em;
+            margin-top: 50px;
+            border-top-left-radius: 50px;
+            border-top-right-radius: 50px;
+            box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsividade */
+        @media screen and (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab {
+                margin: 10px 0;
+                text-align: center;
+            }
+
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>AVISOS</h1>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <div class="tab tab-general active" data-branch="general">Avisos em Geral</div>
+        <div class="tab" data-branch="1">Filial 1</div>
+        <div class="tab" data-branch="3">Filial 3</div>
+        <div class="tab" data-branch="5">Filial 5</div>
+        <div class="tab" data-branch="6">Filial 6</div>
+    </div>
+
+    <!-- Conteúdo para cada aba -->
+    <div class="tab-content active" id="tab-content-general">
+        <h2>Avisos em Geral</h2>
+        <div class="note-form">
+            <h3>Adicionar novo aviso</h3>
+            <input type="text" id="note-title-general" placeholder="Título">
+            <input type="password" id="password-general" placeholder="Senha" maxlength="10">
+            <textarea id="note-description-general" rows="4" placeholder="Descrição"></textarea>
+            <input type="file" id="file-general" accept="application/pdf">
+            <button onclick="addGeneralNote()">Adicionar Aviso</button>
+        </div>
+<div class="note-form">
+        <!-- Formulário de adicionar novo aviso -->
+    </div>
+    <ul class="notes-list" id="notes-list-general">
+        <li class="note-item">
+            <h4>⚠️ ATENÇÃO</h4>
+            <p>Desconto KNN Idiomas
+
+A única unidade do KNN idiomas que vale o desconto da GD NET FIBRA é na unidade de ESMERALDAS.
+Detalhando mais ainda: 
+
+Cliente de BETIM, NETSIX, NOVO RETIRO PODE TER O DESCONTO, PORÉM APENAS NA UNIDADE DE ESMERALDAS DO KNN.</p>
+   </li>
+    </ul>
+    <div class="note-form">
+        <!-- Formulário de adicionar novo aviso -->
+    </div>
+    <ul class="notes-list" id="notes-list-general">
+        <li class="note-item">
+            <h4>⚠️ ATENÇÃO</h4>
+            <p>Gentileza atualizar os números de contatos nos agendamentos das ORDENS DE SERVIÇO. 
+
+É importante ter o número de quem solicitou ou de um representante do cadastro, na qual estará recebendo o técnico. 
+Permitindo que o próprio técnico faça o contato direto.</p>
+        </li>
+    </ul> 
+</li>
+    </ul>
+<div class="note-form">
+        <!-- Formulário de adicionar novo aviso -->
+    </div>
+    <ul class="notes-list" id="notes-list-general">
+        <li class="note-item">
+            <h4>⚠️ ATENÇÃO</h4>
+            <p>Será considerado um comercial, (vendas, upgrade dos planos, cancelamento e reativação).
+Para essas solicitações, haverá um departamento que tratará sobre esses assuntos.
+
+📌 Vale lembrar:
+
+Sempre preencher o campo de observação com o motivo do atendimento, especialmente ao transferir para outro setor. Isso ajuda a dar continuidade com as informações corretas e agiliza o processo.
+
+- Exemplos:
+Reativação: "Cliente quer reativar após um tempo inativo."
+Upgrade: "Cliente quer maior velocidade para trabalho remoto."
+Cancelamento: "Cliente insatisfeito com o preço."
+
+🚨 PARA OS ATENDIMENTOS FORA DO EXPEDIENTE, CONSULTAR NO GRUPO SE HÁ DISPONIBILIDADE DE UMA DAS COLABORADORES ASSUMIREM, CASO AO CONTRÁRIO, O ATENDIMENTO SERÁ FEITO POR VOCÊ MESMO.
+
+🚨 Importante:
+Na filial NETSIX, manteremos exatamente como já fazemos!</p>
+        <a href="https://gamma.app/docs/Atendimento-Comercial-1q6os964my4440t?mode=doc" target="_blank" class="attachment-link">Atendimento Comercial (PDF)</a>
+        </li>
+    </ul>
+</div>
+
+    <!-- Repetição do padrão para cada filial (1, 3, 5 e 6) -->
+    <div class="tab-content" id="tab-content-1">
+        <h2>Filial 1 (Betim)</h2>
+        <div class="note-form">
+            <h3>Adicionar novo aviso</h3>
+            <input type="text" id="note-title-1" placeholder="Título">
+            <input type="password" id="password-1" placeholder="Senha" maxlength="10">
+            <textarea id="note-description-1" rows="4" placeholder="Descrição"></textarea>
+            <input type="file" id="file-1" accept="application/pdf">
+            <button onclick="addNote(1)">Adicionar Aviso</button>
+        </div>
+        <ul class="notes-list" id="notes-list-1"></ul>
+    </div>
+
+    <div class="tab-content" id="tab-content-3">
+        <h2>Filial 3 (Novo Retiro)</h2>
+        <div class="note-form">
+            <h3>Adicionar novo aviso</h3>
+            <input type="text" id="note-title-3" placeholder="Título">
+            <input type="password" id="password-3" placeholder="Senha" maxlength="10">
+            <textarea id="note-description-3" rows="4" placeholder="Descrição"></textarea>
+            <input type="file" id="file-3" accept="application/pdf">
+            <button onclick="addNote(3)">Adicionar Aviso</button>
+        </div>
+        <ul class="notes-list" id="notes-list-3"></ul>
+    </div>
+
+    <div class="tab-content" id="tab-content-5">
+        <h2>Filial 5 (Esmeraldas)</h2>
+        <div class="note-form">
+            <h3>Adicionar novo aviso</h3>
+            <input type="text" id="note-title-5" placeholder="Título">
+            <input type="password" id="password-5" placeholder="Senha" maxlength="10">
+            <textarea id="note-description-5" rows="4" placeholder="Descrição"></textarea>
+            <input type="file" id="file-5" accept="application/pdf">
+            <button onclick="addNote(5)">Adicionar Aviso</button>
+        </div>
+        <ul class="notes-list" id="notes-list-5"></ul>
+    </div>
+
+    <div class="tab-content" id="tab-content-6">
+        <h2>Filial 6 (Netsix)</h2>
+        <div class="note-form">
+            <h3>Adicionar novo aviso</h3>
+            <input type="text" id="note-title-6" placeholder="Título">
+            <input type="password" id="password-6" placeholder="Senha" maxlength="10">
+            <textarea id="note-description-6" rows="4" placeholder="Descrição"></textarea>
+            <input type="file" id="file-6" accept="application/pdf">
+            <button onclick="addNote(6)">Adicionar Aviso</button>
+        </div>
+        <ul class="notes-list" id="notes-list-6">
+        <li class="note-item">
+            <h4>🚨 ATENÇÃO</h4>
+            <p><strong>NÃO informar os valores de pontos adicionais no CONDOMÍNIO NOSSA FAZENDA.</strong></p>
+            <p>Nessas situações, deve-se realizar uma avaliação técnica/comercial e um orçamento diretamente no local, devido à distância de um ponto ao outro.</p>
+        </li>
+    </ul>
+</div>
+
+<footer>
+    <p>@ Site desenvolvido para consultar avisos das filiais.</p>
+</footer>
+
+<script>
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+            tab.classList.add('active');
+            const branchId = tab.dataset.branch === 'general' ? 'tab-content-general' : `tab-content-${tab.dataset.branch}`;
+            document.getElementById(branchId).classList.add('active');
+        });
+    });
+
+    function addGeneralNote() {
+        addNoteInternal('general');
+    }
+
+    function addNote(branch) {
+        addNoteInternal(branch);
+    }
+
+    function addNoteInternal(branch) {
+        const title = document.getElementById(`note-title-${branch}`).value;
+        const password = document.getElementById(`password-${branch}`).value;
+        const description = document.getElementById(`note-description-${branch}`).value;
+        const fileInput = document.getElementById(`file-${branch}`);
+        const file = fileInput.files[0];
+
+        if (password === 'gdns2015') {
+            if (title && description) {
+                const noteList = document.getElementById(`notes-list-${branch}`);
+                const noteItem = document.createElement('li');
+                noteItem.classList.add('note-item');
+                const fileLink = file ? URL.createObjectURL(file) : null;
+
+                noteItem.innerHTML = `
+                    <h4>${title}</h4>
+                    <p>${description}</p>
+                    ${fileLink ? `<a href="${fileLink}" target="_blank" class="attachment-link">Ver Anexo (PDF)</a>` : ''}
+                    <button class="delete-btn" onclick="deleteNote(this, '${branch}')">Remover</button>
+                `;
+                noteList.appendChild(noteItem);
+
+                // Limpar os campos
+                document.getElementById(`note-title-${branch}`).value = '';
+                document.getElementById(`note-description-${branch}`).value = '';
+                document.getElementById(`password-${branch}`).value = '';
+                fileInput.value = '';
+            } else {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        } else {
+            alert('Senha incorreta!');
+        }
+    }
+
+    function deleteNote(button, branch) {
+        const password = prompt('Digite a senha para remover o aviso:');
+        if (password === 'gdns2015') {
+            const noteItem = button.parentElement;
+            noteItem.remove();
+        } else {
+            alert('Senha incorreta!');
+        }
+    }
+</script>
+
+</body>
+</html>
