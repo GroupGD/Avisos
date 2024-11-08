@@ -8,6 +8,48 @@
         /* Configuração global */
         body {
             font-family: 'Roboto', sans-serif;
+            background-color: #e0f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Esconde o conteúdo até que a senha esteja correta */
+        .hidden {
+            display: none;
+        }
+
+        /* Resto do seu CSS */
+        /* Cabeçalho */
+        header { /* código do cabeçalho aqui */ }
+        /* Adicione o restante do CSS existente */
+    </style>
+    
+    <script>
+        // Script de proteção por senha
+        document.addEventListener("DOMContentLoaded", function() {
+            const password = prompt("Digite a senha para acessar o site:");
+            if (password === "Gdns_2015") {
+                document.getElementById("content").classList.remove("hidden");
+            } else {
+                alert("Senha incorreta. Acesso negado.");
+                document.body.innerHTML = ""; // Limpa o conteúdo em caso de senha incorreta
+            }
+        });
+    </script>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avisos das Filiais</title>
+    <style>
+        /* Configuração global */
+        body {
+            font-family: 'Roboto', sans-serif;
             background-color: #e0f7fa; /* Fundo azul claro */
             color: #333;
             margin: 0;
@@ -329,6 +371,8 @@ Sempre preencher o campo de observação com o motivo do atendimento, especialme
 Reativação: "Cliente quer reativar após um tempo inativo."
 Upgrade: "Cliente quer maior velocidade para trabalho remoto."
 Cancelamento: "Cliente insatisfeito com o preço."
+
+🚨 PARA OS ATENDIMENTOS FORA DO EXPEDIENTE, CONSULTAR NO GRUPO SE HÁ DISPONIBILIDADE DE UMA DAS COLABORADORES ASSUMIREM, CASO AO CONTRÁRIO, O ATENDIMENTO SERÁ FEITO POR VOCÊ MESMO.
 
 🚨 Importante:
 Na filial NETSIX, manteremos exatamente como já fazemos!</p>
